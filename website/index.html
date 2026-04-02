@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PhishGuard AI — Deep Learning phishing URL detection system with 96.8% accuracy. Powered by an Artificial Neural Network trained on 11,000+ URLs." />
+  <meta name="keywords" content="phishing detection, deep learning, URL analyzer, cybersecurity, neural network, AI" />
+  <title>PhishGuard AI | Deep Learning Phishing Detection System</title>
+
+  <!-- Preconnect for fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Three.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     LOADING SCREEN
+═══════════════════════════════════════════════════════════════════ -->
+<div id="loading-screen">
+  <div class="loading-grid"></div>
+  <div class="loading-content">
+    <div class="loading-shield">
+      <svg viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#00f5ff"/>
+            <stop offset="100%" stop-color="#7c3aed"/>
+          </linearGradient>
+        </defs>
+        <path d="M40 4L8 18V42C8 60.4 22.4 77.4 40 82C57.6 77.4 72 60.4 72 42V18L40 4Z"
+              fill="url(#sg)" opacity="0.15" stroke="url(#sg)" stroke-width="2"/>
+        <path d="M40 18L26 24V34C26 42.4 32.2 50.2 40 52.4C47.8 50.2 54 42.4 54 34V24L40 18Z"
+              fill="url(#sg)" opacity="0.4"/>
+        <text x="40" y="38" text-anchor="middle" font-size="14" font-weight="700"
+              font-family="Orbitron" fill="white" opacity="0.9">AI</text>
+      </svg>
+    </div>
+    <div class="loading-brand">Phish<span class="accent">Guard</span> AI</div>
+    <div class="loading-bar-wrap">
+      <div class="loading-bar" id="loading-bar"></div>
+    </div>
+    <div class="loading-status" id="loading-status">LOADING NEURAL NETWORK WEIGHTS...</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════════════════════════════ -->
+<nav id="navbar">
+  <div class="nav-container">
+    <div class="nav-logo">
+      Phish<span class="accent">Guard</span> AI
+    </div>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#checker">URL Checker</a></li>
+      <li><a href="#neural-viz">Neural Network</a></li>
+      <li><a href="#dashboard">Dashboard</a></li>
+    </ul>
+    <button class="nav-cta" onclick="scrollToChecker()">Try Now →</button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HERO SECTION  — Three.js canvas + overlay text
+═══════════════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <!-- Three.js renders here -->
+  <canvas id="hero-canvas"></canvas>
+
+  <!-- Content overlay -->
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      AI-Powered Cybersecurity
+    </div>
+
+    <h1 class="hero-title">
+      <span class="title-line">Deep Learning</span>
+      <span class="title-line">Phishing Detection</span>
+      <span class="title-line">System</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      Advanced neural network achieving
+      <span class="highlight">96.8% accuracy</span> —
+      protecting users from malicious URLs in real-time
+      with 87-feature extraction.
+    </p>
+
+    <!-- Animated counters -->
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="stat-num" data-target="96.8">0</span><span class="stat-suffix">%</span>
+        <span class="stat-label">Accuracy</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-num" data-target="87">0</span>
+        <span class="stat-label">Features</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-num" data-target="11431">0</span><span class="stat-suffix">+</span>
+        <span class="stat-label">URLs Trained</span>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="scrollToChecker()">
+        🔍 Analyze a URL
+      </button>
+      <button class="btn-secondary" onclick="scrollToSection('how-it-works')">
+        How It Works ↓
+      </button>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero-scroll">
+    <span>SCROLL</span>
+    <div class="scroll-mouse"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HOW IT WORKS
+═══════════════════════════════════════════════════════════════════ -->
+<section id="how-it-works">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Process</span>
+      <h2>How It Works</h2>
+      <p>Four-stage deep learning pipeline that analyzes any URL in milliseconds</p>
+    </div>
+
+    <div class="flow-diagram">
+
+      <!-- Step 1 -->
+      <div class="flow-step reveal reveal-delay-1">
+        <div class="step-num">1</div>
+        <div class="step-icon-wrap" style="background:rgba(0,245,255,0.08)">🔗</div>
+        <h3>Input URL</h3>
+        <p>User submits any URL for analysis. The system accepts both HTTP and HTTPS links.</p>
+      </div>
+
+      <div class="flow-connector">
+        <div class="connector-line"></div>
+        <div class="connector-arrow">→</div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="flow-step reveal reveal-delay-2">
+        <div class="step-num">2</div>
+        <div class="step-icon-wrap" style="background:rgba(124,58,237,0.08)">⚙️</div>
+        <h3>Feature Extraction</h3>
+        <p>87 features extracted: domain age, subdomains, SSL cert, redirects, HTML content, and more.</p>
+      </div>
+
+      <div class="flow-connector">
+        <div class="connector-line"></div>
+        <div class="connector-arrow">→</div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="flow-step reveal reveal-delay-3">
+        <div class="step-num">3</div>
+        <div class="step-icon-wrap" style="background:rgba(167,139,250,0.08)">🧠</div>
+        <h3>Neural Processing</h3>
+        <p>A 4-layer ANN (Dense 64→32→16→2) classifies the URL with Dropout regularization.</p>
+      </div>
+
+      <div class="flow-connector">
+        <div class="connector-line"></div>
+        <div class="connector-arrow">→</div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="flow-step reveal reveal-delay-4">
+        <div class="step-num">4</div>
+        <div class="step-icon-wrap" style="background:rgba(16,185,129,0.08)">✅</div>
+        <h3>Verdict</h3>
+        <p>Output: Safe / Phishing with confidence score and detailed risk explanation.</p>
+      </div>
+
+    </div><!-- /.flow-diagram -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     URL CHECKER
+═══════════════════════════════════════════════════════════════════ -->
+<section id="checker">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Demo</span>
+      <h2>URL Security Checker</h2>
+      <p>Enter any URL below — the model will extract features and classify it instantly</p>
+    </div>
+
+    <div class="checker-card glass reveal">
+
+      <!-- Input row -->
+      <div class="input-group">
+        <input
+          type="url"
+          id="url-input"
+          class="url-input"
+          placeholder="https://example.com"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button class="btn-check" id="check-btn" onclick="checkURL()">
+          🔍 Analyze
+        </button>
+      </div>
+
+      <!-- Quick test buttons -->
+      <div class="quick-tests">
+        <span>Quick test:</span>
+        <button class="quick-test-btn safe"
+          onclick="testURL('https://google.com')">
+          ✅ Safe Site
+        </button>
+        <button class="quick-test-btn phishing"
+          onclick="testURL('http://paypa1-login-verify.tk/account/update?redirect=%2F')">
+          🚨 Phishing Site
+        </button>
+        <button class="quick-test-btn phishing"
+          onclick="testURL('http://192.168.1.1/secure-banking-login.php')">
+          🚨 IP Attack
+        </button>
+      </div>
+
+      <!-- Step-by-step analysis progress -->
+      <div class="analysis-steps" id="analysis-steps">
+        <div class="analysis-steps-inner">
+          <div class="a-step" id="step-parse">
+            <div class="a-step-icon">🔗</div>
+            <div class="a-step-label">URL Parsing</div>
+          </div>
+          <div class="a-step" id="step-extract">
+            <div class="a-step-icon">⚙️</div>
+            <div class="a-step-label">Feature Extraction</div>
+          </div>
+          <div class="a-step" id="step-infer">
+            <div class="a-step-icon">🧠</div>
+            <div class="a-step-label">Model Inference</div>
+          </div>
+          <div class="a-step" id="step-result">
+            <div class="a-step-icon">📊</div>
+            <div class="a-step-label">Result</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result display area -->
+      <div class="result-area" id="result-area"></div>
+
+    </div><!-- /.checker-card -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     NEURAL NETWORK VISUALIZATION
+═══════════════════════════════════════════════════════════════════ -->
+<section id="neural-viz">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Architecture</span>
+      <h2>Neural Network Visualized</h2>
+      <p>Watch data flow through each layer in real-time during prediction</p>
+    </div>
+
+    <div class="viz-layout reveal">
+      <!-- Canvas -->
+      <canvas id="network-canvas"></canvas>
+
+      <!-- Sidebar info -->
+      <div class="viz-info">
+        <div>
+          <h3>Model Architecture</h3>
+          <p>
+            Artificial Neural Network (ANN) built with TensorFlow / Keras.
+            Uses ReLU activations, Dropout regularization, and a Sigmoid output
+            for binary phishing classification.
+          </p>
+        </div>
+
+        <!-- Layer list (populated by network-viz.js) -->
+        <div class="layer-list" id="layer-list"></div>
+
+        <!-- Controls -->
+        <div class="viz-controls">
+          <button class="btn-viz" id="btn-run-demo">▶ Run Demo Pass</button>
+          <button class="btn-viz" id="btn-reset-viz">↺ Reset</button>
+        </div>
+
+        <!-- Model stats -->
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+          <div class="feature-item">
+            <div class="feature-dot good"></div>
+            <span>Optimizer: Adam (lr=0.001)</span>
+          </div>
+          <div class="feature-item">
+            <div class="feature-dot good"></div>
+            <span>Loss: Binary Cross-Entropy</span>
+          </div>
+          <div class="feature-item">
+            <div class="feature-dot good"></div>
+            <span>Dropout: 30% per hidden layer</span>
+          </div>
+          <div class="feature-item">
+            <div class="feature-dot good"></div>
+            <span>Trained: 30 epochs, batch 32</span>
+          </div>
+        </div>
+      </div>
+    </div><!-- /.viz-layout -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DASHBOARD
+═══════════════════════════════════════════════════════════════════ -->
+<section id="dashboard">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Stats</span>
+      <h2>Model Performance Dashboard</h2>
+      <p>Evaluated on a held-out test set of 2,287 URLs</p>
+    </div>
+
+    <!-- Metric cards -->
+    <div class="metrics-grid">
+      <div class="metric-card glass reveal reveal-delay-1" style="--card-glow:rgba(0,245,255,0.06)">
+        <div class="metric-icon">🎯</div>
+        <div class="metric-val cyan glow-cyan" data-target="96.8">0</div>
+        <div class="metric-label">Accuracy (%)</div>
+        <div class="metric-sub">± 0.4% on test set</div>
+      </div>
+      <div class="metric-card glass reveal reveal-delay-2" style="--card-glow:rgba(167,139,250,0.06)">
+        <div class="metric-icon">🎯</div>
+        <div class="metric-val purple" data-target="97.2">0</div>
+        <div class="metric-label">Precision (%)</div>
+        <div class="metric-sub">Low false-positive rate</div>
+      </div>
+      <div class="metric-card glass reveal reveal-delay-3" style="--card-glow:rgba(16,185,129,0.06)">
+        <div class="metric-icon">📡</div>
+        <div class="metric-val green" data-target="96.4">0</div>
+        <div class="metric-label">Recall (%)</div>
+        <div class="metric-sub">Catches 96.4% of phishing</div>
+      </div>
+      <div class="metric-card glass reveal reveal-delay-4" style="--card-glow:rgba(245,158,11,0.06)">
+        <div class="metric-icon">⚡</div>
+        <div class="metric-val amber" data-target="96.8">0</div>
+        <div class="metric-label">F1 Score (%)</div>
+        <div class="metric-sub">Precision-Recall balance</div>
+      </div>
+    </div>
+
+    <!-- Charts grid -->
+    <div class="charts-grid reveal">
+
+      <!-- Distribution Doughnut -->
+      <div class="chart-card glass">
+        <h3>Dataset Distribution</h3>
+        <div class="chart-wrapper short">
+          <canvas id="dist-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Radar / Performance -->
+      <div class="chart-card glass">
+        <h3>Model Comparison</h3>
+        <div class="chart-wrapper short">
+          <canvas id="radar-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Feature Importance (wide) -->
+      <div class="chart-card glass wide">
+        <h3>Feature Importance (Top 15)</h3>
+        <div class="chart-wrapper tall">
+          <canvas id="feature-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Training History (wide) -->
+      <div class="chart-card glass wide">
+        <h3>Training History — Accuracy &amp; Loss</h3>
+        <div class="chart-wrapper">
+          <canvas id="training-chart"></canvas>
+        </div>
+      </div>
+
+    </div><!-- /.charts-grid -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ABOUT / TECH STACK
+═══════════════════════════════════════════════════════════════════ -->
+<section id="about" style="padding:80px 24px;background:var(--bg-primary)">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">About</span>
+      <h2>Technology Stack</h2>
+      <p>Built with state-of-the-art machine learning tools</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:900px;margin:0 auto">
+      <!-- Tech cards -->
+      <div class="glass reveal reveal-delay-1" style="padding:24px;border-radius:16px;text-align:center">
+        <div style="font-size:2.4rem;margin-bottom:12px">🐍</div>
+        <h3 style="font-family:var(--font-heading);font-size:0.9rem;color:var(--accent-cyan);margin-bottom:6px">Python 3.11</h3>
+        <p style="font-size:0.78rem;color:var(--text-secondary)">Core language for ML pipeline</p>
+      </div>
+      <div class="glass reveal reveal-delay-2" style="padding:24px;border-radius:16px;text-align:center">
+        <div style="font-size:2.4rem;margin-bottom:12px">🔥</div>
+        <h3 style="font-family:var(--font-heading);font-size:0.9rem;color:var(--accent-cyan);margin-bottom:6px">TensorFlow / Keras</h3>
+        <p style="font-size:0.78rem;color:var(--text-secondary)">Neural network training & inference</p>
+      </div>
+      <div class="glass reveal reveal-delay-3" style="padding:24px;border-radius:16px;text-align:center">
+        <div style="font-size:2.4rem;margin-bottom:12px">📊</div>
+        <h3 style="font-family:var(--font-heading);font-size:0.9rem;color:var(--accent-cyan);margin-bottom:6px">scikit-learn</h3>
+        <p style="font-size:0.78rem;color:var(--text-secondary)">Preprocessing, evaluation metrics</p>
+      </div>
+      <div class="glass reveal reveal-delay-4" style="padding:24px;border-radius:16px;text-align:center">
+        <div style="font-size:2.4rem;margin-bottom:12px">🐼</div>
+        <h3 style="font-family:var(--font-heading);font-size:0.9rem;color:var(--accent-cyan);margin-bottom:6px">Pandas + NumPy</h3>
+        <p style="font-size:0.78rem;color:var(--text-secondary)">Data manipulation & analysis</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Phish<span class="accent">Guard</span> AI</div>
+      <div class="footer-desc">Deep Learning Phishing Detection System</div>
+    </div>
+    <div class="footer-links">
+      <a href="#hero">Home</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#checker">URL Checker</a>
+      <a href="#dashboard">Dashboard</a>
+    </div>
+    <div class="footer-right">
+      <p>Built with <span class="built-with">♥ Deep Learning</span></p>
+      <p>ANN · TensorFlow · Three.js · Chart.js</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SCRIPTS  (order matters)
+═══════════════════════════════════════════════════════════════════ -->
+<script src="js/app.js"></script>
+<script src="js/three-hero.js"></script>
+<script src="js/network-viz.js"></script>
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
