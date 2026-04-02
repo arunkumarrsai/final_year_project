@@ -823,23 +823,53 @@ section + section::before {
 }
 
 @media (max-width: 768px) {
-  section { padding: 64px 20px; }
+  section { padding: 60px 16px; }
   .nav-links, .nav-cta { display: none; }
   .hamburger { display: flex; }
-  .hero-stats { gap: 24px; }
-  .flow-diagram { flex-direction: column; }
-  .flow-connector { transform: rotate(90deg); }
-  .checker-card { padding: 24px; }
-  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
-  .footer-inner { flex-direction: column; text-align: center; }
+  .hero-title .title-line { font-size: clamp(2rem, 8vw, 2.5rem); }
+  .hero-title .title-line:nth-child(2) { font-size: clamp(2.2rem, 9vw, 3rem); }
+  .hero-stats { gap: 20px; flex-wrap: wrap; }
+  .flow-diagram { flex-direction: column; align-items: stretch; }
+  .flow-connector { flex: 0 0 40px; transform: rotate(90deg); margin: 10px 0; }
+  .checker-card { padding: 20px; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); padding: 0 10px; }
+  .metric-card { padding: 20px; }
+  .viz-layout { gap: 20px; }
+  .footer-inner { flex-direction: column; text-align: center; gap: 16px; }
   .footer-right { text-align: center; }
+  .footer-links { justify-content: center; }
 }
 
 @media (max-width: 480px) {
-  .metrics-grid { grid-template-columns: 1fr 1fr; }
-  .hero-stats { gap: 16px; }
-  .result-verdict { flex-direction: column; text-align: center; }
-  .confidence-bar-wrap { align-items: center; }
+  .hero-title .title-line { font-size: clamp(1.6rem, 8vw, 2rem) !important; }
+  .hero-title .title-line:nth-child(2) { font-size: clamp(1.8rem, 9vw, 2.4rem) !important; padding-bottom: 2px; }
+  
+  .input-group { 
+    flex-direction: column; 
+    border: none; background: transparent; padding: 0; 
+  }
+  .input-group:focus-within { box-shadow: none !important; }
+  .url-input { 
+    width: 100%; padding: 14px 20px; 
+    background: rgba(0,0,0,0.4); 
+    border: 1px solid var(--border-color); margin-bottom: 12px;
+    border-radius: var(--radius-md); 
+  }
+  .url-input:focus { border-color: var(--accent-cyan); }
+  .btn-check { width: 100%; border-radius: var(--radius-md); justify-content: center; }
+  
+  .metrics-grid { grid-template-columns: 1fr; }
+  .hero-stats { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .hero-actions { display: flex; flex-direction: column; width: 100%; }
+  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+  
+  .result-verdict { flex-direction: column; text-align: center; gap: 16px; padding: 20px; }
+  .confidence-bar-wrap { align-items: center; width: 100%; }
+  .conf-bar-outer { width: 100%; max-width: 200px; }
+  
+  .analysis-steps-inner { flex-direction: column; align-items: stretch; margin-bottom: 8px;}
+  .a-step { width: 100%; padding: 8px; margin-bottom: 8px;}
+  .result-features { grid-template-columns: 1fr; }
 }
 
 /* ── Neon Text Flicker for PHISHING warning ─────────────────────── */
