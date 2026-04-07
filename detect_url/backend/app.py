@@ -5,9 +5,11 @@ from pydantic import BaseModel
 import os
 import sys
 
-# Ensure imports work
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from backend.db_chatbot import DatabaseChatbot
+# Ensure imports work regardless of how we start the app
+try:
+    from backend.db_chatbot import DatabaseChatbot
+except ImportError:
+    from detect_url.backend.db_chatbot import DatabaseChatbot
 
 app = FastAPI()
 

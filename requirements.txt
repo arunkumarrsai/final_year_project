@@ -29,3 +29,5 @@ pydantic
 typing-extensions
 fastapi
 uvicorn
+gunicorn
+uvicorn[standard]
