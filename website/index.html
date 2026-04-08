@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="PhishGuard AI — Deep Learning phishing URL detection system with 96.8% accuracy. Powered by an Artificial Neural Network trained on 11,000+ URLs." />
   <meta name="keywords" content="phishing detection, deep learning, URL analyzer, cybersecurity, neural network, AI" />
-  <title>URL Detection</title>
+  <title>URL Detection with AI</title>
 
   <!-- Preconnect for fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -44,7 +44,7 @@
               font-family="Orbitron" fill="white" opacity="0.9">AI</text>
       </svg>
     </div>
-    <div class="loading-brand">Phishing<span class="accent">URL</span> Detection</div>
+    <div class="loading-brand">Phishing<span class="accent"> URL</span> Detection</div>
     <div class="loading-bar-wrap">
       <div class="loading-bar" id="loading-bar"></div>
     </div>
@@ -327,18 +327,6 @@
         <div class="metric-label">Accuracy (%)</div>
         <div class="metric-sub">± 0.4% on test set</div>
       </div>
-      <div class="metric-card glass reveal reveal-delay-2" style="--card-glow:rgba(167,139,250,0.06)">
-        <div class="metric-icon">🎯</div>
-        <div class="metric-val purple" data-target="97.2">0</div>
-        <div class="metric-label">Precision (%)</div>
-        <div class="metric-sub">Low false-positive rate</div>
-      </div>
-      <div class="metric-card glass reveal reveal-delay-3" style="--card-glow:rgba(16,185,129,0.06)">
-        <div class="metric-icon">📡</div>
-        <div class="metric-val green" data-target="96.4">0</div>
-        <div class="metric-label">Recall (%)</div>
-        <div class="metric-sub">Catches 96.4% of phishing</div>
-      </div>
       <div class="metric-card glass reveal reveal-delay-4" style="--card-glow:rgba(245,158,11,0.06)">
         <div class="metric-icon">⚡</div>
         <div class="metric-val amber" data-target="96.8">0</div>
@@ -453,15 +441,7 @@
           <canvas id="feature-chart"></canvas>
         </div>
       </div>
-
       <!-- Training History (wide) -->
-      <div class="chart-card glass wide">
-        <h3>Training History — Accuracy &amp; Loss</h3>
-        <div class="chart-wrapper">
-          <canvas id="training-chart"></canvas>
-        </div>
-      </div>
-
     </div><!-- /.charts-grid -->
   </div>
 </section>
